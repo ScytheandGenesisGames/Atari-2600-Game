@@ -5,28 +5,29 @@
 0.continueP0             f0a2              (R )
 0.continueP1             f07e              (R )
 0.endkerloop             f106              (R )
-0.enterfromNBL           f107                  
+0.enterfromNBL           f107              (R )
 0.kerloop                f05b                  
 0.L00                    d000                  
 0.L01                    d000                  
-0.skipDrawlastP0         f166              (R )
+0.L02                    f4d6                  
+0.skipDrawlastP0         f162              (R )
 0.skipDrawlastP1         f100              (R )
 0.skipDrawP0             f04f              (R )
 0.skipDrawP1             f055              (R )
 0.startkernel            f074              (R )
 1.CYCLES                 0000              (R )
 2.CYCLES                 0002              (R )
-22.CYCLES                0000              (R )
-3.CYCLES                 000a              (R )
-4.CYCLES                 000a              (R )
-5.CYCLES                 0002              (R )
-6.CYCLES                 0004              (R )
-7.CYCLES                 0000              (R )
-8.CYCLES                 0006              (R )
+21.CYCLES                0000              (R )
+3.CYCLES                 000c              (R )
+4.CYCLES                 0000              (R )
+5.CYCLES                 0004              (R )
+6.CYCLES                 0000              (R )
+7.CYCLES                 0006              (R )
 A                        00d4                  
 a                        00d4                  
 alarmclock               0002                  
-altkernel                f0b0                  
+altkernel                f0bd                  
+altkernel2               f0b1              (R )
 AUDC0                    0015                  
 AUDC1                    0016                  
 AUDF0                    0017                  
@@ -53,8 +54,8 @@ BS_jsr                   ffeb              (R )
 bs_mask                  0001              (R )
 BS_return                ffdd              (R )
 bscode_length            0020              (R )
-C                        00d6                  
 c                        00d6                  
+C                        00d6                  
 clearmem                 f264              (R )
 COLUBK                   0009                  
 COLUP0                   0006              (R )
@@ -89,20 +90,20 @@ ECHOFIRST                0001
 ENABL                    001f              (R )
 ENAM0                    001d              (R )
 ENAM1                    001e              (R )
-endkernel                f16c              (R )
-enterlastkernel          f11b              (R )
-F                        00d9                  
+endkernel                f16a              (R )
+enterlastkernel          f11b                  
 f                        00d9                  
+F                        00d9                  
 FASTFETCH                0000 ????         (R )
 font                     0000 ????         (R )
-g                        00da                  
 G                        00da                  
+g                        00da                  
 game                     d000              (R )
 goback                   f072              (R )
 GRP0                     001b              (R )
 GRP1                     001c              (R )
-H                        00db                  
 h                        00db                  
+H                        00db                  
 handwritten              0003                  
 hex                      0008                  
 HMBL                     0024                  
@@ -113,8 +114,8 @@ HMOVE                    002a              (R )
 HMP0                     0020              (R )
 HMP1                     0021              (R )
 HorPosLoop               f457              (R )
-I                        00dc                  
 i                        00dc                  
+I                        00dc                  
 initscore                f271              (R )
 INPT0                    0008                  
 INPT1                    0009                  
@@ -127,15 +128,15 @@ interrupted              0004
 INTIM                    0284              (R )
 j                        00dd                  
 J                        00dd                  
-k                        00de                  
 K                        00de                  
+k                        00de                  
 keepgoing                f2ef              (R )
 keepgoingy               f30d              (R )
 kernel                   f000              (R )
 kernelmacrodef           0000 ????         (R )
 l                        00df                  
 L                        00df                  
-lastkernelline           f0cd              (R )
+lastkernelline           f0d1              (R )
 leftloop                 f366              (R )
 legacy                   0000 ????         (R )
 lifecolor                00f4                  
@@ -156,7 +157,8 @@ missile1y                0088              (R )
 multisprite              0000 ????         (R )
 N                        00e1                  
 n                        00e1                  
-no_blank_lines           0000 ????         (R )
+no_blank_lines           0001              (R )
+no_blank_lines_bailout   f168              (R )
 NO_ILLEGAL_OPCODES       0000 ????         (R )
 noeor                    f431              (R )
 noinc                    f2f6              (R )
@@ -234,11 +236,11 @@ playfield                00a4              (R )
 playfieldbase            00a4              (R )
 playfieldpos             00ef              (R )
 plotpoint                f31b              (R )
-q                        00e4                  
 Q                        00e4                  
+q                        00e4                  
 qtcontroller             0000 ????         (R )
-R                        00e5                  
 r                        00e5                  
+R                        00e5                  
 rand                     00a2              (R )
 rand16                   0000 ????         (R )
 randomize                f42a                  
@@ -257,8 +259,8 @@ retroputer               0005
 rightloop                f37e              (R )
 ROM2k                    0000 ????         (R )
 RSYNC                    0003                  
-s                        00e6                  
 S                        00e6                  
+s                        00e6                  
 score                    0093              (R )
 scorecolor               00a3              (R )
 scorefade                0000 ????         (R )
@@ -302,8 +304,8 @@ tiny                     0007
 u                        00e8                  
 U                        00e8                  
 up2                      f3b5              (R )
-V                        00e9                  
 v                        00e9                  
+V                        00e9                  
 var0                     00a4                  
 var1                     00a5                  
 var10                    00ae                  
@@ -364,14 +366,14 @@ VERSION_MACRO            0069
 VERSION_VCS              0069                  
 vertical_reflect         0000 ????         (R )
 VSYNC                    0000              (R )
-W                        00ea                  
 w                        00ea                  
+W                        00ea                  
 whimsey                  0006                  
 WSYNC                    0002              (R )
-x                        00eb                  
 X                        00eb                  
-Y                        00ec                  
+x                        00eb                  
 y                        00ec                  
-z                        00ed                  
+Y                        00ec                  
 Z                        00ed                  
+z                        00ed                  
 --- End of Symbol List.
