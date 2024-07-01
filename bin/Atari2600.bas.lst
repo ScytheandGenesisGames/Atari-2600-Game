@@ -725,12 +725,14 @@
       2  3000 ????
       3  3000 ????	       00 20	   bscode_length =	32
       4  3000 ????	       00 01	   PFcolors   =	1
-      5  3000 ????	       00 01	   no_blank_lines =	1
-      6  3000 ????	       00 2b	   vblank_time =	43
-      7  3000 ????	       00 25	   overscan_time =	37
-      8  3000 ????	       00 01	   bs_mask    =	1
-      9  3000 ????	       00 08	   bankswitch =	8
-     10  3000 ????	       1f f8	   bankswitch_hotspot =	$1FF8
+      5  3000 ????	       00 01	   player1colors =	1
+      6  3000 ????	       00 01	   player1colors =	1
+      7  3000 ????	       00 01	   playercolors =	1
+      8  3000 ????	       00 2b	   vblank_time =	43
+      9  3000 ????	       00 25	   overscan_time =	37
+     10  3000 ????	       00 01	   bs_mask    =	1
+     11  3000 ????	       00 08	   bankswitch =	8
+     12  3000 ????	       1f f8	   bankswitch_hotspot =	$1FF8
 ------- FILE 2600basic.h
       7  3000 ????
       8  3000 ????	       00 80	   player0x   =	$80
@@ -967,12 +969,14 @@
       2  3000 ????
       3  3000 ????	       00 20	   bscode_length =	32
       4  3000 ????	       00 01	   PFcolors   =	1
-      5  3000 ????	       00 01	   no_blank_lines =	1
-      6  3000 ????	       00 2b	   vblank_time =	43
-      7  3000 ????	       00 25	   overscan_time =	37
-      8  3000 ????	       00 01	   bs_mask    =	1
-      9  3000 ????	       00 08	   bankswitch =	8
-     10  3000 ????	       1f f8	   bankswitch_hotspot =	$1FF8
+      5  3000 ????	       00 01	   player1colors =	1
+      6  3000 ????	       00 01	   player1colors =	1
+      7  3000 ????	       00 01	   playercolors =	1
+      8  3000 ????	       00 2b	   vblank_time =	43
+      9  3000 ????	       00 25	   overscan_time =	37
+     10  3000 ????	       00 01	   bs_mask    =	1
+     11  3000 ????	       00 08	   bankswitch =	8
+     12  3000 ????	       1f f8	   bankswitch_hotspot =	$1FF8
 ------- FILE c:\Users\start\OneDrive\Documents\Visual Code Workspace\Atari-2600-Game\Atari2600.bas.asm
       8  3000 ????				      ifconst	bankswitch
       9  3000 ????				      if	bankswitch == 8
@@ -1005,9 +1009,9 @@
      36  1000
      37  1000				   .L01 		;  set tv NTSC
      38  1000
-     39  1000				   .L02 		;  set kernel_options pfcolors no_blank_lines
+     39  1000				   .L02 		;  set kernel_options playercolors player1colors pfcolors
      40  1000
-     41  1000				   .L03 		;  set optimization size
+     41  1000				   .L03 		;  set smartbranching on
      42  1000
      43  1000				   .L04 		;  set optimization speed
      44  1000
@@ -1206,7 +1210,7 @@
     217  204f				   .skipDrawP0
     218  204f		       a9 00		      lda	#0
     219  2051		       a8		      tay
-    220  2052		       4c a2 f0 	      jmp	.continueP0
+    220  2052		       4c a3 f0 	      jmp	.continueP0
     221  2055
     222  2055				   .skipDrawP1
     223  2055		       a9 00		      lda	#0
@@ -1279,290 +1283,313 @@
     271  207e				   .continueP1
     272  207e		       85 1c		      sta	GRP1	;3
     273  2080
-    274  2080					      ifnconst	player1colors
-    275  2080		       a5 87		      lda	missile1height	;3
-    276  2082		       c7 88		      dcp	missile1y	;5
-    277  2084		       2a		      rol		;2
-    278  2085		       2a		      rol		;2
-    279  2086		       85 1e		      sta	ENAM1	;3
-    280  2088				  -	      else
-    281  2088				  -	      lda	(player1color),y
-    282  2088				  -	      sta	COLUP1
-    283  2088				  -	      ifnconst	playercolors
-    284  2088				  -	      sleep	7
-    285  2088				  -	      else
-    286  2088				  -	      lda.w	player0colorstore
-    287  2088				  -	      sta	COLUP0
-    288  2088				  -	      endif
-    289  2088					      endif
-    290  2088
-    291  2088				  -	      ifconst	pfres
-    292  2088				  -	      lda	playfield+pfres*pfwidth-132,x
-    293  2088				  -	      sta	PF1L	;3
-    294  2088				  -	      lda	playfield+pfres*pfwidth-131-pfadjust,x
-    295  2088				  -	      sta	PF2L	;3
-    296  2088				  -	      lda	playfield+pfres*pfwidth-129,x
-    297  2088				  -	      sta	PF1R	; 3 too early?
-    298  2088				  -	      lda	playfield+pfres*pfwidth-130-pfadjust,x
-    299  2088				  -	      sta	PF2R	;3
-    300  2088					      else
-    301  2088		       b5 50		      lda	playfield-48+pfwidth*12+44-128,x	;4
-    302  208a		       85 0e		      sta	PF1L	;3
-    303  208c		       b5 51		      lda	playfield-48+pfwidth*12+45-128-pfadjust,x	;4
-    304  208e		       85 0f		      sta	PF2L	;3
-    305  2090		       b5 53		      lda	playfield-48+pfwidth*12+47-128,x	;4
-    306  2092		       85 0e		      sta	PF1R	; 3 too early?
-    307  2094		       b5 52		      lda	playfield-48+pfwidth*12+46-128-pfadjust,x	;4
-    308  2096		       85 0f		      sta	PF2R	;3
-    309  2098					      endif
-    310  2098							; sleep 3
-    311  2098
-    312  2098		       a5 8e		      lda	player0height
-    313  209a		       c7 85		      dcp	player0y
-    314  209c		       90 b1		      bcc	.skipDrawP0
-    315  209e		       a4 85		      ldy	player0y
-    316  20a0		       b1 8a		      lda	(player0pointer),y
-    317  20a2				   .continueP0
-    318  20a2		       85 1b		      sta	GRP0
-    319  20a4
-    320  20a4				  -	      ifnconst	no_blank_lines
-    321  20a4				  -	      ifnconst	playercolors
-    322  20a4				  -	      lda	missile0height	;3
-    323  20a4				  -	      dcp	missile0y	;5
-    324  20a4				  -	      sbc	stack1
-    325  20a4				  -	      sta	ENAM0	;3
-    326  20a4				  -	      else
-    327  20a4				  -	      lda	(player0color),y
-    328  20a4				  -	      sta	player0colorstore
-    329  20a4				  -	      sleep	6
-    330  20a4				  -	      endif
-    331  20a4				  -	      dec	temp1
-    332  20a4				  -	      bne	continuekernel
-    333  20a4					      else
-    334  20a4		       c6 9c		      dec	temp1
-    335  20a6		       f0 0c		      beq	altkernel2
-    336  20a8				  -	      ifconst	readpaddle
-    337  20a8				  -	      ldy	currentpaddle
-    338  20a8				  -	      lda	INPT0,y
-    339  20a8				  -	      bpl	noreadpaddle
-    340  20a8				  -	      inc	paddle
-    341  20a8				  -	      jmp	continuekernel2
-    342  20a8				  -noreadpaddle
-    343  20a8				  -	      sleep	2
-    344  20a8				  -	      jmp	continuekernel
-    345  20a8					      else
-    346  20a8					      ifnconst	playercolors
-    347  20a8					      ifconst	PFcolors
-    348  20a8		       8a		      txa
-    349  20a9		       a8		      tay
-    350  20aa		       b1 f0		      lda	(pfcolortable),y
-    351  20ac					      ifnconst	backgroundchange
-    352  20ac		       85 08		      sta	COLUPF
-    353  20ae				  -	      else
-    354  20ae				  -	      sta	COLUBK
-    355  20ae					      endif
-    356  20ae		       4c 5b f0 	      jmp	continuekernel
-    357  20b1				  -	      else
-    358  20b1				  -	      ifconst	kernelmacrodef
-    359  20b1				  -	      kernelmacro
-    360  20b1				  -	      else
-    361  20b1				  -	      sleep	12
-    362  20b1				  -	      endif
-    363  20b1					      endif
-    364  20b1				  -	      else
-    365  20b1				  -	      lda	(player0color),y
-    366  20b1				  -	      sta	player0colorstore
-    367  20b1				  -	      sleep	4
-    368  20b1					      endif
-    369  20b1		       4c 5b f0 	      jmp	continuekernel
-    370  20b4					      endif
-    371  20b4				   altkernel2
-    372  20b4		       8a		      txa
-    373  20b5					      ifnconst	vertical_reflect
-    374  20b5		       cb fc		      sbx	#256-pfwidth
-    375  20b7				  -	      else
-    376  20b7				  -	      sbx	#256-pfwidth/2
-    377  20b7					      endif
-    378  20b7		       30 24		      bmi	lastkernelline
-    379  20b9				  -	      ifconst	pfrowheight
-    380  20b9				  -	      lda	#pfrowheight
-    381  20b9					      else
-    382  20b9					      ifnconst	pfres
-    383  20b9		       a9 08		      lda	#8
-    384  20bb				  -	      else
-    385  20bb				  -	      lda	#(96/pfres)	; try to come close to the real size
-    386  20bb					      endif
-    387  20bb					      endif
-    388  20bb		       85 9c		      sta	temp1
-    389  20bd		       4c 5b f0 	      jmp	continuekernel
-    390  20c0					      endif
-    391  20c0
-    392  20c0				   altkernel
-    393  20c0
-    394  20c0				  -	      ifconst	PFmaskvalue
-    395  20c0				  -	      lda	#PFmaskvalue
-    396  20c0					      else
-    397  20c0		       a9 00		      lda	#0
-    398  20c2					      endif
-    399  20c2		       85 0e		      sta	PF1L
-    400  20c4		       85 0f		      sta	PF2
-    401  20c6
-    402  20c6
-    403  20c6							;sleep 3
-    404  20c6
-    405  20c6							;28 cycles to fix things
-    406  20c6							;minus 11=17
-    407  20c6
-    408  20c6							; lax temp4
-    409  20c6							; clc
-    410  20c6		       8a		      txa
-    411  20c7					      ifnconst	vertical_reflect
-    412  20c7		       cb fc		      sbx	#256-pfwidth
-    413  20c9				  -	      else
-    414  20c9				  -	      sbx	#256-pfwidth/2
-    415  20c9					      endif
-    416  20c9
-    417  20c9		       30 12		      bmi	lastkernelline
-    418  20cb
-    419  20cb				  -	      ifconst	PFcolorandheight
-    420  20cb				  -	      ifconst	pfres
-    421  20cb				  -	      ldy	playfieldcolorandheight-131+pfres*pfwidth,x
-    422  20cb				  -	      else
-    423  20cb				  -	      ldy	playfieldcolorandheight-87,x
-    424  20cb				  -	      endif
-    425  20cb				  -	      ifnconst	backgroundchange
-    426  20cb				  -	      sty	COLUPF
-    427  20cb				  -	      else
-    428  20cb				  -	      sty	COLUBK
-    429  20cb				  -	      endif
-    430  20cb				  -	      ifconst	pfres
-    431  20cb				  -	      lda	playfieldcolorandheight-132+pfres*pfwidth,x
-    432  20cb				  -	      else
-    433  20cb				  -	      lda	playfieldcolorandheight-88,x
-    434  20cb				  -	      endif
-    435  20cb				  -	      sta.w	temp1
-    436  20cb					      endif
-    437  20cb				  -	      ifconst	PFheights
-    438  20cb				  -	      lsr
-    439  20cb				  -	      lsr
-    440  20cb				  -	      tay
-    441  20cb				  -	      lda	(pfheighttable),y
-    442  20cb				  -	      sta.w	temp1
-    443  20cb					      endif
-    444  20cb					      ifconst	PFcolors
-    445  20cb		       a8		      tay
-    446  20cc		       b1 f0		      lda	(pfcolortable),y
-    447  20ce					      ifnconst	backgroundchange
-    448  20ce		       85 08		      sta	COLUPF
-    449  20d0				  -	      else
-    450  20d0				  -	      sta	COLUBK
-    451  20d0					      endif
-    452  20d0				  -	      ifconst	pfrowheight
-    453  20d0				  -	      lda	#pfrowheight
-    454  20d0					      else
-    455  20d0					      ifnconst	pfres
-    456  20d0		       a9 08		      lda	#8
-    457  20d2				  -	      else
-    458  20d2				  -	      lda	#(96/pfres)	; try to come close to the real size
-    459  20d2					      endif
-    460  20d2					      endif
-    461  20d2		       85 9c		      sta	temp1
-    462  20d4					      endif
-    463  20d4					      ifnconst	PFcolorandheight
-    464  20d4				  -	      ifnconst	PFcolors
-    465  20d4				  -	      ifnconst	PFheights
-    466  20d4				  -	      ifnconst	no_blank_lines
-    467  20d4				  -			; read paddle 0
-    468  20d4				  -			; lo-res paddle read
-    469  20d4				  -			; bit INPT0
-    470  20d4				  -			; bmi paddleskipread
-    471  20d4				  -			; inc paddle0
-    472  20d4				  -			;donepaddleskip
-    473  20d4				  -	      sleep	10
-    474  20d4				  -	      ifconst	pfrowheight
-    475  20d4				  -	      lda	#pfrowheight
-    476  20d4				  -	      else
-    477  20d4				  -	      ifnconst	pfres
-    478  20d4				  -	      lda	#8
-    479  20d4				  -	      else
-    480  20d4				  -	      lda	#(96/pfres)	; try to come close to the real size
-    481  20d4				  -	      endif
-    482  20d4				  -	      endif
-    483  20d4				  -	      sta	temp1
-    484  20d4				  -	      endif
-    485  20d4				  -	      endif
-    486  20d4					      endif
-    487  20d4					      endif
-    488  20d4
-    489  20d4
-    490  20d4		       a5 92		      lda	ballheight
-    491  20d6		       c7 89		      dcp	bally
-    492  20d8		       e5 9f		      sbc	temp4
-    493  20da
-    494  20da
-    495  20da		       4c 72 f0 	      jmp	goback
-    496  20dd
-    497  20dd
-    498  20dd				  -	      ifnconst	no_blank_lines
-    499  20dd				  -lastkernelline
-    500  20dd				  -	      ifnconst	PFcolors
-    501  20dd				  -	      sleep	10
-    502  20dd				  -	      else
-    503  20dd				  -	      ldy	#124
-    504  20dd				  -	      lda	(pfcolortable),y
-    505  20dd				  -	      sta	COLUPF
-    506  20dd				  -	      endif
-    507  20dd				  -
-    508  20dd				  -	      ifconst	PFheights
-    509  20dd				  -	      ldx	#1
-    510  20dd				  -			;sleep 4
-    511  20dd				  -	      sleep	3	; this was over 1 cycle
-    512  20dd				  -	      else
-    513  20dd				  -	      ldx	playfieldpos
-    514  20dd				  -			;sleep 3
-    515  20dd				  -	      sleep	2	; this was over 1 cycle
-    516  20dd				  -	      endif
-    517  20dd				  -
-    518  20dd				  -	      jmp	enterlastkernel
-    519  20dd				  -
-    520  20dd					      else
-    521  20dd				   lastkernelline
-    522  20dd
-    523  20dd				  -	      ifconst	PFheights
-    524  20dd				  -	      ldx	#1
-    525  20dd				  -			;sleep 5
-    526  20dd				  -	      sleep	4	; this was over 1 cycle
-    527  20dd					      else
-    528  20dd		       a6 ef		      ldx	playfieldpos
-    529  20df							;sleep 4
-      0  20df					      sleep	3	; this was over 1 cycle
-      1  20df				   .CYCLES    SET	3
-      2  20df
-      3  20df				  -	      IF	.CYCLES < 2
-      4  20df				  -	      ECHO	"MACRO ERROR: 'SLEEP': Duration must be > 1"
-      5  20df				  -	      ERR
-      6  20df					      ENDIF
-      7  20df
-      8  20df					      IF	.CYCLES & 1
-      9  20df					      IFNCONST	NO_ILLEGAL_OPCODES
-     10  20df		       04 00		      nop	0
-     11  20e1				  -	      ELSE
-     12  20e1				  -	      bit	VSYNC
-     13  20e1					      ENDIF
-     14  20e1				   .CYCLES    SET	.CYCLES - 3
-     15  20e1					      ENDIF
-     16  20e1
-     17  20e1				  -	      REPEAT	.CYCLES / 2
-     18  20e1				  -	      nop
-     19  20e1					      REPEND
-    531  20e1					      endif
-    532  20e1
-    533  20e1		       e0 00		      cpx	#0
-    534  20e3		       d0 22		      bne	.enterfromNBL
-    535  20e5		       4c 68 f1 	      jmp	no_blank_lines_bailout
-    536  20e8					      endif
-    537  20e8
-    538  20e8					      if	((<*)>$d5)
+    274  2080				  -	      ifnconst	player1colors
+    275  2080				  -	      lda	missile1height	;3
+    276  2080				  -	      dcp	missile1y	;5
+    277  2080				  -	      rol		;2
+    278  2080				  -	      rol		;2
+    279  2080				  -	      sta	ENAM1	;3
+    280  2080					      else
+    281  2080		       b1 87		      lda	(player1color),y
+    282  2082		       85 07		      sta	COLUP1
+    283  2084				  -	      ifnconst	playercolors
+    284  2084				  -	      sleep	7
+    285  2084					      else
+    286  2084		       ad 82 00 	      lda.w	player0colorstore
+    287  2087		       85 06		      sta	COLUP0
+    288  2089					      endif
+    289  2089					      endif
+    290  2089
+    291  2089				  -	      ifconst	pfres
+    292  2089				  -	      lda	playfield+pfres*pfwidth-132,x
+    293  2089				  -	      sta	PF1L	;3
+    294  2089				  -	      lda	playfield+pfres*pfwidth-131-pfadjust,x
+    295  2089				  -	      sta	PF2L	;3
+    296  2089				  -	      lda	playfield+pfres*pfwidth-129,x
+    297  2089				  -	      sta	PF1R	; 3 too early?
+    298  2089				  -	      lda	playfield+pfres*pfwidth-130-pfadjust,x
+    299  2089				  -	      sta	PF2R	;3
+    300  2089					      else
+    301  2089		       b5 50		      lda	playfield-48+pfwidth*12+44-128,x	;4
+    302  208b		       85 0e		      sta	PF1L	;3
+    303  208d		       b5 51		      lda	playfield-48+pfwidth*12+45-128-pfadjust,x	;4
+    304  208f		       85 0f		      sta	PF2L	;3
+    305  2091		       b5 53		      lda	playfield-48+pfwidth*12+47-128,x	;4
+    306  2093		       85 0e		      sta	PF1R	; 3 too early?
+    307  2095		       b5 52		      lda	playfield-48+pfwidth*12+46-128-pfadjust,x	;4
+    308  2097		       85 0f		      sta	PF2R	;3
+    309  2099					      endif
+    310  2099							; sleep 3
+    311  2099
+    312  2099		       a5 8e		      lda	player0height
+    313  209b		       c7 85		      dcp	player0y
+    314  209d		       90 b0		      bcc	.skipDrawP0
+    315  209f		       a4 85		      ldy	player0y
+    316  20a1		       b1 8a		      lda	(player0pointer),y
+    317  20a3				   .continueP0
+    318  20a3		       85 1b		      sta	GRP0
+    319  20a5
+    320  20a5					      ifnconst	no_blank_lines
+    321  20a5				  -	      ifnconst	playercolors
+    322  20a5				  -	      lda	missile0height	;3
+    323  20a5				  -	      dcp	missile0y	;5
+    324  20a5				  -	      sbc	stack1
+    325  20a5				  -	      sta	ENAM0	;3
+    326  20a5					      else
+    327  20a5		       b1 90		      lda	(player0color),y
+    328  20a7		       85 82		      sta	player0colorstore
+      0  20a9					      sleep	6
+      1  20a9				   .CYCLES    SET	6
+      2  20a9
+      3  20a9				  -	      IF	.CYCLES < 2
+      4  20a9				  -	      ECHO	"MACRO ERROR: 'SLEEP': Duration must be > 1"
+      5  20a9				  -	      ERR
+      6  20a9					      ENDIF
+      7  20a9
+      8  20a9				  -	      IF	.CYCLES & 1
+      9  20a9				  -	      IFNCONST	NO_ILLEGAL_OPCODES
+     10  20a9				  -	      nop	0
+     11  20a9				  -	      ELSE
+     12  20a9				  -	      bit	VSYNC
+     13  20a9				  -	      ENDIF
+     14  20a9				  -.CYCLES    SET	.CYCLES - 3
+     15  20a9					      ENDIF
+     16  20a9
+     17  20a9					      REPEAT	.CYCLES / 2
+     18  20a9		       ea		      nop
+     17  20a9					      REPEND
+     18  20aa		       ea		      nop
+     17  20aa					      REPEND
+     18  20ab		       ea		      nop
+     19  20ac					      REPEND
+    330  20ac					      endif
+    331  20ac		       c6 9c		      dec	temp1
+    332  20ae		       d0 ab		      bne	continuekernel
+    333  20b0				  -	      else
+    334  20b0				  -	      dec	temp1
+    335  20b0				  -	      beq	altkernel2
+    336  20b0				  -	      ifconst	readpaddle
+    337  20b0				  -	      ldy	currentpaddle
+    338  20b0				  -	      lda	INPT0,y
+    339  20b0				  -	      bpl	noreadpaddle
+    340  20b0				  -	      inc	paddle
+    341  20b0				  -	      jmp	continuekernel2
+    342  20b0				  -noreadpaddle
+    343  20b0				  -	      sleep	2
+    344  20b0				  -	      jmp	continuekernel
+    345  20b0				  -	      else
+    346  20b0				  -	      ifnconst	playercolors
+    347  20b0				  -	      ifconst	PFcolors
+    348  20b0				  -	      txa
+    349  20b0				  -	      tay
+    350  20b0				  -	      lda	(pfcolortable),y
+    351  20b0				  -	      ifnconst	backgroundchange
+    352  20b0				  -	      sta	COLUPF
+    353  20b0				  -	      else
+    354  20b0				  -	      sta	COLUBK
+    355  20b0				  -	      endif
+    356  20b0				  -	      jmp	continuekernel
+    357  20b0				  -	      else
+    358  20b0				  -	      ifconst	kernelmacrodef
+    359  20b0				  -	      kernelmacro
+    360  20b0				  -	      else
+    361  20b0				  -	      sleep	12
+    362  20b0				  -	      endif
+    363  20b0				  -	      endif
+    364  20b0				  -	      else
+    365  20b0				  -	      lda	(player0color),y
+    366  20b0				  -	      sta	player0colorstore
+    367  20b0				  -	      sleep	4
+    368  20b0				  -	      endif
+    369  20b0				  -	      jmp	continuekernel
+    370  20b0				  -	      endif
+    371  20b0				  -altkernel2
+    372  20b0				  -	      txa
+    373  20b0				  -	      ifnconst	vertical_reflect
+    374  20b0				  -	      sbx	#256-pfwidth
+    375  20b0				  -	      else
+    376  20b0				  -	      sbx	#256-pfwidth/2
+    377  20b0				  -	      endif
+    378  20b0				  -	      bmi	lastkernelline
+    379  20b0				  -	      ifconst	pfrowheight
+    380  20b0				  -	      lda	#pfrowheight
+    381  20b0				  -	      else
+    382  20b0				  -	      ifnconst	pfres
+    383  20b0				  -	      lda	#8
+    384  20b0				  -	      else
+    385  20b0				  -	      lda	#(96/pfres)	; try to come close to the real size
+    386  20b0				  -	      endif
+    387  20b0				  -	      endif
+    388  20b0				  -	      sta	temp1
+    389  20b0				  -	      jmp	continuekernel
+    390  20b0					      endif
+    391  20b0
+    392  20b0				   altkernel
+    393  20b0
+    394  20b0				  -	      ifconst	PFmaskvalue
+    395  20b0				  -	      lda	#PFmaskvalue
+    396  20b0					      else
+    397  20b0		       a9 00		      lda	#0
+    398  20b2					      endif
+    399  20b2		       85 0e		      sta	PF1L
+    400  20b4		       85 0f		      sta	PF2
+    401  20b6
+    402  20b6
+    403  20b6							;sleep 3
+    404  20b6
+    405  20b6							;28 cycles to fix things
+    406  20b6							;minus 11=17
+    407  20b6
+    408  20b6							; lax temp4
+    409  20b6							; clc
+    410  20b6		       8a		      txa
+    411  20b7					      ifnconst	vertical_reflect
+    412  20b7		       cb fc		      sbx	#256-pfwidth
+    413  20b9				  -	      else
+    414  20b9				  -	      sbx	#256-pfwidth/2
+    415  20b9					      endif
+    416  20b9
+    417  20b9		       30 12		      bmi	lastkernelline
+    418  20bb
+    419  20bb				  -	      ifconst	PFcolorandheight
+    420  20bb				  -	      ifconst	pfres
+    421  20bb				  -	      ldy	playfieldcolorandheight-131+pfres*pfwidth,x
+    422  20bb				  -	      else
+    423  20bb				  -	      ldy	playfieldcolorandheight-87,x
+    424  20bb				  -	      endif
+    425  20bb				  -	      ifnconst	backgroundchange
+    426  20bb				  -	      sty	COLUPF
+    427  20bb				  -	      else
+    428  20bb				  -	      sty	COLUBK
+    429  20bb				  -	      endif
+    430  20bb				  -	      ifconst	pfres
+    431  20bb				  -	      lda	playfieldcolorandheight-132+pfres*pfwidth,x
+    432  20bb				  -	      else
+    433  20bb				  -	      lda	playfieldcolorandheight-88,x
+    434  20bb				  -	      endif
+    435  20bb				  -	      sta.w	temp1
+    436  20bb					      endif
+    437  20bb				  -	      ifconst	PFheights
+    438  20bb				  -	      lsr
+    439  20bb				  -	      lsr
+    440  20bb				  -	      tay
+    441  20bb				  -	      lda	(pfheighttable),y
+    442  20bb				  -	      sta.w	temp1
+    443  20bb					      endif
+    444  20bb					      ifconst	PFcolors
+    445  20bb		       a8		      tay
+    446  20bc		       b1 f0		      lda	(pfcolortable),y
+    447  20be					      ifnconst	backgroundchange
+    448  20be		       85 08		      sta	COLUPF
+    449  20c0				  -	      else
+    450  20c0				  -	      sta	COLUBK
+    451  20c0					      endif
+    452  20c0				  -	      ifconst	pfrowheight
+    453  20c0				  -	      lda	#pfrowheight
+    454  20c0					      else
+    455  20c0					      ifnconst	pfres
+    456  20c0		       a9 08		      lda	#8
+    457  20c2				  -	      else
+    458  20c2				  -	      lda	#(96/pfres)	; try to come close to the real size
+    459  20c2					      endif
+    460  20c2					      endif
+    461  20c2		       85 9c		      sta	temp1
+    462  20c4					      endif
+    463  20c4					      ifnconst	PFcolorandheight
+    464  20c4				  -	      ifnconst	PFcolors
+    465  20c4				  -	      ifnconst	PFheights
+    466  20c4				  -	      ifnconst	no_blank_lines
+    467  20c4				  -			; read paddle 0
+    468  20c4				  -			; lo-res paddle read
+    469  20c4				  -			; bit INPT0
+    470  20c4				  -			; bmi paddleskipread
+    471  20c4				  -			; inc paddle0
+    472  20c4				  -			;donepaddleskip
+    473  20c4				  -	      sleep	10
+    474  20c4				  -	      ifconst	pfrowheight
+    475  20c4				  -	      lda	#pfrowheight
+    476  20c4				  -	      else
+    477  20c4				  -	      ifnconst	pfres
+    478  20c4				  -	      lda	#8
+    479  20c4				  -	      else
+    480  20c4				  -	      lda	#(96/pfres)	; try to come close to the real size
+    481  20c4				  -	      endif
+    482  20c4				  -	      endif
+    483  20c4				  -	      sta	temp1
+    484  20c4				  -	      endif
+    485  20c4				  -	      endif
+    486  20c4					      endif
+    487  20c4					      endif
+    488  20c4
+    489  20c4
+    490  20c4		       a5 92		      lda	ballheight
+    491  20c6		       c7 89		      dcp	bally
+    492  20c8		       e5 9f		      sbc	temp4
+    493  20ca
+    494  20ca
+    495  20ca		       4c 72 f0 	      jmp	goback
+    496  20cd
+    497  20cd
+    498  20cd					      ifnconst	no_blank_lines
+    499  20cd				   lastkernelline
+    500  20cd				  -	      ifnconst	PFcolors
+    501  20cd				  -	      sleep	10
+    502  20cd					      else
+    503  20cd		       a0 7c		      ldy	#124
+    504  20cf		       b1 f0		      lda	(pfcolortable),y
+    505  20d1		       85 08		      sta	COLUPF
+    506  20d3					      endif
+    507  20d3
+    508  20d3				  -	      ifconst	PFheights
+    509  20d3				  -	      ldx	#1
+    510  20d3				  -			;sleep 4
+    511  20d3				  -	      sleep	3	; this was over 1 cycle
+    512  20d3					      else
+    513  20d3		       a6 ef		      ldx	playfieldpos
+    514  20d5							;sleep 3
+      0  20d5					      sleep	2	; this was over 1 cycle
+      1  20d5				   .CYCLES    SET	2
+      2  20d5
+      3  20d5				  -	      IF	.CYCLES < 2
+      4  20d5				  -	      ECHO	"MACRO ERROR: 'SLEEP': Duration must be > 1"
+      5  20d5				  -	      ERR
+      6  20d5					      ENDIF
+      7  20d5
+      8  20d5				  -	      IF	.CYCLES & 1
+      9  20d5				  -	      IFNCONST	NO_ILLEGAL_OPCODES
+     10  20d5				  -	      nop	0
+     11  20d5				  -	      ELSE
+     12  20d5				  -	      bit	VSYNC
+     13  20d5				  -	      ENDIF
+     14  20d5				  -.CYCLES    SET	.CYCLES - 3
+     15  20d5					      ENDIF
+     16  20d5
+     17  20d5					      REPEAT	.CYCLES / 2
+     18  20d5		       ea		      nop
+     19  20d6					      REPEND
+    516  20d6					      endif
+    517  20d6
+    518  20d6		       4c 1b f1 	      jmp	enterlastkernel
+    519  20d9
+    520  20d9				  -	      else
+    521  20d9				  -lastkernelline
+    522  20d9				  -
+    523  20d9				  -	      ifconst	PFheights
+    524  20d9				  -	      ldx	#1
+    525  20d9				  -			;sleep 5
+    526  20d9				  -	      sleep	4	; this was over 1 cycle
+    527  20d9				  -	      else
+    528  20d9				  -	      ldx	playfieldpos
+    529  20d9				  -			;sleep 4
+    530  20d9				  -	      sleep	3	; this was over 1 cycle
+    531  20d9				  -	      endif
+    532  20d9				  -
+    533  20d9				  -	      cpx	#0
+    534  20d9				  -	      bne	.enterfromNBL
+    535  20d9				  -	      jmp	no_blank_lines_bailout
+    536  20d9					      endif
+    537  20d9
+    538  20d9					      if	((<*)>$d5)
     539  2100		       00 00 00 00*	      align	256
     540  2100					      endif
     541  2100							; this is a kludge to prevent page wrapping - fix!!!
@@ -1619,17 +1646,17 @@
     592  212d				   .continuelastP1
     593  212d		       85 1c		      sta	GRP1	;3
     594  212f
-    595  212f					      ifnconst	player1colors
-    596  212f		       a5 87		      lda	missile1height	;3
-    597  2131		       c7 88		      dcp	missile1y	;5
-    598  2133				  -	      else
-    599  2133				  -	      lda	(player1color),y
-    600  2133				  -	      sta	COLUP1
+    595  212f				  -	      ifnconst	player1colors
+    596  212f				  -	      lda	missile1height	;3
+    597  212f				  -	      dcp	missile1y	;5
+    598  212f					      else
+    599  212f		       b1 87		      lda	(player1color),y
+    600  2131		       85 07		      sta	COLUP1
     601  2133					      endif
     602  2133
     603  2133		       ca		      dex
     604  2134							;dec temp4 ; might try putting this above PF writes
-    605  2134		       f0 34		      beq	endkernel
+    605  2134		       f0 37		      beq	endkernel
     606  2136
     607  2136
     608  2136				  -	      ifconst	pfres
@@ -1652,223 +1679,223 @@
     625  2148		       84 0f		      sty	PF2R	;3
     626  214a					      endif
     627  214a
-    628  214a					      ifnconst	player1colors
-    629  214a		       2a		      rol		;2
-    630  214b		       2a		      rol		;2
-    631  214c		       85 1e		      sta	ENAM1	;3
-    632  214e				  -	      else
-    633  214e				  -	      ifnconst	playercolors
-    634  214e				  -	      sleep	7
-    635  214e				  -	      else
-    636  214e				  -	      lda.w	player0colorstore
-    637  214e				  -	      sta	COLUP0
-    638  214e				  -	      endif
-    639  214e					      endif
-    640  214e
-    641  214e		       ad 8e 00 	      lda.w	player0height
-    642  2151		       c7 85		      dcp	player0y
-    643  2153		       90 0d		      bcc	.skipDrawlastP0
-    644  2155		       a4 85		      ldy	player0y
-    645  2157		       b1 8a		      lda	(player0pointer),y
-    646  2159				   .continuelastP0
-    647  2159		       85 1b		      sta	GRP0
-    648  215b
-    649  215b
-    650  215b
-    651  215b				  -	      ifnconst	no_blank_lines
-    652  215b				  -	      lda	missile0height	;3
-    653  215b				  -	      dcp	missile0y	;5
-    654  215b				  -	      sbc	stack1
-    655  215b				  -	      sta	ENAM0	;3
-    656  215b				  -	      jmp	.endkerloop
-    657  215b					      else
-    658  215b				  -	      ifconst	readpaddle
-    659  215b				  -	      ldy	currentpaddle
-    660  215b				  -	      lda	INPT0,y
-    661  215b				  -	      bpl	noreadpaddle2
-    662  215b				  -	      inc	paddle
-    663  215b				  -	      jmp	.endkerloop
-    664  215b				  -noreadpaddle2
-    665  215b				  -	      sleep	4
-    666  215b				  -	      jmp	.endkerloop
-    667  215b					      else		; no_blank_lines and no paddle reading
-    668  215b		       68		      pla
-    669  215c		       48		      pha		; 14 cycles in 4 bytes
-    670  215d		       68		      pla
-    671  215e		       48		      pha
-    672  215f							; sleep 14
-    673  215f		       4c 06 f1 	      jmp	.endkerloop
-    674  2162					      endif
-    675  2162					      endif
-    676  2162
-    677  2162
-    678  2162							; ifconst donepaddleskip
-    679  2162							;paddleskipread
-    680  2162							; this is kind of lame, since it requires 4 cycles from a page boundary crossing
-    681  2162							; plus we get a lo-res paddle read
-    682  2162							; bmi donepaddleskip
-    683  2162							; endif
-    684  2162
-    685  2162				   .skipDrawlastP0
-    686  2162		       a9 00		      lda	#0
-    687  2164		       a8		      tay
-    688  2165		       4c 59 f1 	      jmp	.continuelastP0
-    689  2168
-    690  2168					      ifconst	no_blank_lines
-    691  2168				   no_blank_lines_bailout
-    692  2168		       a2 00		      ldx	#0
-    693  216a					      endif
-    694  216a
-    695  216a				   endkernel
-    696  216a							; 6 digit score routine
-    697  216a		       86 0e		      stx	PF1
-    698  216c		       86 0f		      stx	PF2
-    699  216e		       86 0d		      stx	PF0
-    700  2170		       18		      clc
-    701  2171
-    702  2171				  -	      ifconst	pfrowheight
-    703  2171				  -	      lda	#pfrowheight+2
-    704  2171					      else
-    705  2171					      ifnconst	pfres
-    706  2171		       a9 0a		      lda	#10
-    707  2173				  -	      else
-    708  2173				  -	      lda	#(96/pfres)+2	; try to come close to the real size
-    709  2173					      endif
-    710  2173					      endif
-    711  2173
-    712  2173		       e5 ef		      sbc	playfieldpos
-    713  2175		       85 ef		      sta	playfieldpos
-    714  2177		       8a		      txa
-    715  2178
-    716  2178				  -	      ifconst	shakescreen
-    717  2178				  -	      bit	shakescreen
-    718  2178				  -	      bmi	noshakescreen2
-    719  2178				  -	      ldx	#$3D
-    720  2178				  -noshakescreen2
-    721  2178					      endif
-    722  2178
-    723  2178		       95 02		      sta	WSYNC,x
-    724  217a
-    725  217a							; STA WSYNC ;first one, need one more
-    726  217a		       85 0b		      sta	REFP0
-    727  217c		       85 0c		      sta	REFP1
-    728  217e		       85 1b		      STA	GRP0
-    729  2180		       85 1c		      STA	GRP1
-    730  2182							; STA PF1
-    731  2182							; STA PF2
-    732  2182		       85 2b		      sta	HMCLR
-    733  2184		       85 1d		      sta	ENAM0
-    734  2186		       85 1e		      sta	ENAM1
-    735  2188		       85 1f		      sta	ENABL
-    736  218a
-    737  218a		       a5 9d		      lda	temp2	;restore variables that were obliterated by kernel
-    738  218c		       85 85		      sta	player0y
-    739  218e		       a5 9e		      lda	temp3
-    740  2190		       85 86		      sta	player1y
-    741  2192					      ifnconst	player1colors
-    742  2192		       a5 a1		      lda	temp6
-    743  2194		       85 88		      sta	missile1y
-    744  2196					      endif
-    745  2196					      ifnconst	playercolors
-    746  2196					      ifnconst	readpaddle
-    747  2196		       a5 a0		      lda	temp5
-    748  2198		       85 91		      sta	missile0y
-    749  219a					      endif
-    750  219a					      endif
-    751  219a		       a5 f7		      lda	stack2
-    752  219c		       85 89		      sta	bally
-    753  219e
-    754  219e							; strangely, this isn't required any more. might have
-    755  219e							; resulted from the no_blank_lines score bounce fix
-    756  219e							;ifconst no_blank_lines
-    757  219e							;sta WSYNC
-    758  219e							;endif
-    759  219e
-    760  219e		       ad 84 02 	      lda	INTIM
-    761  21a1		       18		      clc
-    762  21a2				  -	      ifnconst	vblank_time
-    763  21a2				  -	      adc	#43+12+87
-    764  21a2					      else
-    765  21a2		       69 8e		      adc	#vblank_time+12+87
-    766  21a4
-    767  21a4					      endif
-    768  21a4							; sta WSYNC
-    769  21a4		       8d 96 02 	      sta	TIM64T
-    770  21a7
-    771  21a7				  -	      ifconst	minikernel
-    772  21a7				  -	      jsr	minikernel
-    773  21a7					      endif
-    774  21a7
-    775  21a7							; now reassign temp vars for score pointers
-    776  21a7
-    777  21a7							; score pointers contain:
-    778  21a7							; score1-5: lo1,lo2,lo3,lo4,lo5,lo6
-    779  21a7							; swap lo2->temp1
-    780  21a7							; swap lo4->temp3
-    781  21a7							; swap lo6->temp5
-    782  21a7					      ifnconst	noscore
-    783  21a7		       a5 97		      lda	scorepointers+1
-    784  21a9							; ldy temp1
-    785  21a9		       85 9c		      sta	temp1
-    786  21ab							; sty scorepointers+1
-    787  21ab
-    788  21ab		       a5 99		      lda	scorepointers+3
-    789  21ad							; ldy temp3
-    790  21ad		       85 9e		      sta	temp3
-    791  21af							; sty scorepointers+3
-    792  21af
-    793  21af
-    794  21af		       85 2b		      sta	HMCLR
-    795  21b1		       ba		      tsx
-    796  21b2		       86 f6		      stx	stack1
-    797  21b4		       a2 e0		      ldx	#$E0
-    798  21b6		       86 20		      stx	HMP0
-    799  21b8
-    800  21b8		       a5 a3		      LDA	scorecolor
-    801  21ba		       85 06		      STA	COLUP0
-    802  21bc		       85 07		      STA	COLUP1
-    803  21be				  -	      ifconst	scorefade
-    804  21be				  -	      STA	stack2
-    805  21be					      endif
-    806  21be				  -	      ifconst	pfscore
-    807  21be				  -	      lda	pfscorecolor
-    808  21be				  -	      sta	COLUPF
-    809  21be					      endif
-    810  21be		       85 02		      sta	WSYNC
-    811  21c0		       a2 00		      ldx	#0
-    812  21c2		       86 1b		      STx	GRP0
-    813  21c4		       86 1c		      STx	GRP1	; seems to be needed because of vdel
-    814  21c6
-    815  21c6		       a5 9b		      lda	scorepointers+5
-    816  21c8							; ldy temp5
-    817  21c8		       95 a0		      sta	temp5,x
-    818  21ca							; sty scorepointers+5
-    819  21ca		       a9 ff		      lda	#>scoretable
-    820  21cc		       85 97		      sta	scorepointers+1
-    821  21ce		       85 99		      sta	scorepointers+3
-    822  21d0		       85 9b		      sta	scorepointers+5
-    823  21d2		       85 9d		      sta	temp2
-    824  21d4		       85 9f		      sta	temp4
-    825  21d6		       85 a1		      sta	temp6
-    826  21d8		       a0 07		      LDY	#7
-    827  21da		       84 25		      STY	VDELP0
-    828  21dc		       85 10		      STA	RESP0
-    829  21de		       85 11		      STA	RESP1
-    830  21e0
-    831  21e0
-    832  21e0		       a9 03		      LDA	#$03
-    833  21e2		       85 04		      STA	NUSIZ0
-    834  21e4		       85 05		      STA	NUSIZ1
-    835  21e6		       85 26		      STA	VDELP1
-    836  21e8		       a9 f0		      LDA	#$F0
-    837  21ea		       85 21		      STA	HMP1
-    838  21ec		       b1 96		      lda	(scorepointers),y
-    839  21ee		       85 1b		      sta	GRP0
-    840  21f0		       85 2a		      STA	HMOVE	; cycle 73 ?
-    841  21f2		       4c 08 f2 	      jmp	beginscore
-    842  21f5
-    843  21f5
-    844  21f5					      if	((<*)>$d4)
+    628  214a				  -	      ifnconst	player1colors
+    629  214a				  -	      rol		;2
+    630  214a				  -	      rol		;2
+    631  214a				  -	      sta	ENAM1	;3
+    632  214a					      else
+    633  214a				  -	      ifnconst	playercolors
+    634  214a				  -	      sleep	7
+    635  214a					      else
+    636  214a		       ad 82 00 	      lda.w	player0colorstore
+    637  214d		       85 06		      sta	COLUP0
+    638  214f					      endif
+    639  214f					      endif
+    640  214f
+    641  214f		       ad 8e 00 	      lda.w	player0height
+    642  2152		       c7 85		      dcp	player0y
+    643  2154		       90 11		      bcc	.skipDrawlastP0
+    644  2156		       a4 85		      ldy	player0y
+    645  2158		       b1 8a		      lda	(player0pointer),y
+    646  215a				   .continuelastP0
+    647  215a		       85 1b		      sta	GRP0
+    648  215c
+    649  215c
+    650  215c
+    651  215c					      ifnconst	no_blank_lines
+    652  215c		       a5 90		      lda	missile0height	;3
+    653  215e		       c7 91		      dcp	missile0y	;5
+    654  2160		       e5 f6		      sbc	stack1
+    655  2162		       85 1d		      sta	ENAM0	;3
+    656  2164		       4c 06 f1 	      jmp	.endkerloop
+    657  2167				  -	      else
+    658  2167				  -	      ifconst	readpaddle
+    659  2167				  -	      ldy	currentpaddle
+    660  2167				  -	      lda	INPT0,y
+    661  2167				  -	      bpl	noreadpaddle2
+    662  2167				  -	      inc	paddle
+    663  2167				  -	      jmp	.endkerloop
+    664  2167				  -noreadpaddle2
+    665  2167				  -	      sleep	4
+    666  2167				  -	      jmp	.endkerloop
+    667  2167				  -	      else		; no_blank_lines and no paddle reading
+    668  2167				  -	      pla
+    669  2167				  -	      pha		; 14 cycles in 4 bytes
+    670  2167				  -	      pla
+    671  2167				  -	      pha
+    672  2167				  -			; sleep 14
+    673  2167				  -	      jmp	.endkerloop
+    674  2167				  -	      endif
+    675  2167					      endif
+    676  2167
+    677  2167
+    678  2167							; ifconst donepaddleskip
+    679  2167							;paddleskipread
+    680  2167							; this is kind of lame, since it requires 4 cycles from a page boundary crossing
+    681  2167							; plus we get a lo-res paddle read
+    682  2167							; bmi donepaddleskip
+    683  2167							; endif
+    684  2167
+    685  2167				   .skipDrawlastP0
+    686  2167		       a9 00		      lda	#0
+    687  2169		       a8		      tay
+    688  216a		       4c 5a f1 	      jmp	.continuelastP0
+    689  216d
+    690  216d				  -	      ifconst	no_blank_lines
+    691  216d				  -no_blank_lines_bailout
+    692  216d				  -	      ldx	#0
+    693  216d					      endif
+    694  216d
+    695  216d				   endkernel
+    696  216d							; 6 digit score routine
+    697  216d		       86 0e		      stx	PF1
+    698  216f		       86 0f		      stx	PF2
+    699  2171		       86 0d		      stx	PF0
+    700  2173		       18		      clc
+    701  2174
+    702  2174				  -	      ifconst	pfrowheight
+    703  2174				  -	      lda	#pfrowheight+2
+    704  2174					      else
+    705  2174					      ifnconst	pfres
+    706  2174		       a9 0a		      lda	#10
+    707  2176				  -	      else
+    708  2176				  -	      lda	#(96/pfres)+2	; try to come close to the real size
+    709  2176					      endif
+    710  2176					      endif
+    711  2176
+    712  2176		       e5 ef		      sbc	playfieldpos
+    713  2178		       85 ef		      sta	playfieldpos
+    714  217a		       8a		      txa
+    715  217b
+    716  217b				  -	      ifconst	shakescreen
+    717  217b				  -	      bit	shakescreen
+    718  217b				  -	      bmi	noshakescreen2
+    719  217b				  -	      ldx	#$3D
+    720  217b				  -noshakescreen2
+    721  217b					      endif
+    722  217b
+    723  217b		       95 02		      sta	WSYNC,x
+    724  217d
+    725  217d							; STA WSYNC ;first one, need one more
+    726  217d		       85 0b		      sta	REFP0
+    727  217f		       85 0c		      sta	REFP1
+    728  2181		       85 1b		      STA	GRP0
+    729  2183		       85 1c		      STA	GRP1
+    730  2185							; STA PF1
+    731  2185							; STA PF2
+    732  2185		       85 2b		      sta	HMCLR
+    733  2187		       85 1d		      sta	ENAM0
+    734  2189		       85 1e		      sta	ENAM1
+    735  218b		       85 1f		      sta	ENABL
+    736  218d
+    737  218d		       a5 9d		      lda	temp2	;restore variables that were obliterated by kernel
+    738  218f		       85 85		      sta	player0y
+    739  2191		       a5 9e		      lda	temp3
+    740  2193		       85 86		      sta	player1y
+    741  2195				  -	      ifnconst	player1colors
+    742  2195				  -	      lda	temp6
+    743  2195				  -	      sta	missile1y
+    744  2195					      endif
+    745  2195				  -	      ifnconst	playercolors
+    746  2195				  -	      ifnconst	readpaddle
+    747  2195				  -	      lda	temp5
+    748  2195				  -	      sta	missile0y
+    749  2195				  -	      endif
+    750  2195					      endif
+    751  2195		       a5 f7		      lda	stack2
+    752  2197		       85 89		      sta	bally
+    753  2199
+    754  2199							; strangely, this isn't required any more. might have
+    755  2199							; resulted from the no_blank_lines score bounce fix
+    756  2199							;ifconst no_blank_lines
+    757  2199							;sta WSYNC
+    758  2199							;endif
+    759  2199
+    760  2199		       ad 84 02 	      lda	INTIM
+    761  219c		       18		      clc
+    762  219d				  -	      ifnconst	vblank_time
+    763  219d				  -	      adc	#43+12+87
+    764  219d					      else
+    765  219d		       69 8e		      adc	#vblank_time+12+87
+    766  219f
+    767  219f					      endif
+    768  219f							; sta WSYNC
+    769  219f		       8d 96 02 	      sta	TIM64T
+    770  21a2
+    771  21a2				  -	      ifconst	minikernel
+    772  21a2				  -	      jsr	minikernel
+    773  21a2					      endif
+    774  21a2
+    775  21a2							; now reassign temp vars for score pointers
+    776  21a2
+    777  21a2							; score pointers contain:
+    778  21a2							; score1-5: lo1,lo2,lo3,lo4,lo5,lo6
+    779  21a2							; swap lo2->temp1
+    780  21a2							; swap lo4->temp3
+    781  21a2							; swap lo6->temp5
+    782  21a2					      ifnconst	noscore
+    783  21a2		       a5 97		      lda	scorepointers+1
+    784  21a4							; ldy temp1
+    785  21a4		       85 9c		      sta	temp1
+    786  21a6							; sty scorepointers+1
+    787  21a6
+    788  21a6		       a5 99		      lda	scorepointers+3
+    789  21a8							; ldy temp3
+    790  21a8		       85 9e		      sta	temp3
+    791  21aa							; sty scorepointers+3
+    792  21aa
+    793  21aa
+    794  21aa		       85 2b		      sta	HMCLR
+    795  21ac		       ba		      tsx
+    796  21ad		       86 f6		      stx	stack1
+    797  21af		       a2 e0		      ldx	#$E0
+    798  21b1		       86 20		      stx	HMP0
+    799  21b3
+    800  21b3		       a5 a3		      LDA	scorecolor
+    801  21b5		       85 06		      STA	COLUP0
+    802  21b7		       85 07		      STA	COLUP1
+    803  21b9				  -	      ifconst	scorefade
+    804  21b9				  -	      STA	stack2
+    805  21b9					      endif
+    806  21b9				  -	      ifconst	pfscore
+    807  21b9				  -	      lda	pfscorecolor
+    808  21b9				  -	      sta	COLUPF
+    809  21b9					      endif
+    810  21b9		       85 02		      sta	WSYNC
+    811  21bb		       a2 00		      ldx	#0
+    812  21bd		       86 1b		      STx	GRP0
+    813  21bf		       86 1c		      STx	GRP1	; seems to be needed because of vdel
+    814  21c1
+    815  21c1		       a5 9b		      lda	scorepointers+5
+    816  21c3							; ldy temp5
+    817  21c3		       95 a0		      sta	temp5,x
+    818  21c5							; sty scorepointers+5
+    819  21c5		       a9 ff		      lda	#>scoretable
+    820  21c7		       85 97		      sta	scorepointers+1
+    821  21c9		       85 99		      sta	scorepointers+3
+    822  21cb		       85 9b		      sta	scorepointers+5
+    823  21cd		       85 9d		      sta	temp2
+    824  21cf		       85 9f		      sta	temp4
+    825  21d1		       85 a1		      sta	temp6
+    826  21d3		       a0 07		      LDY	#7
+    827  21d5		       84 25		      STY	VDELP0
+    828  21d7		       85 10		      STA	RESP0
+    829  21d9		       85 11		      STA	RESP1
+    830  21db
+    831  21db
+    832  21db		       a9 03		      LDA	#$03
+    833  21dd		       85 04		      STA	NUSIZ0
+    834  21df		       85 05		      STA	NUSIZ1
+    835  21e1		       85 26		      STA	VDELP1
+    836  21e3		       a9 f0		      LDA	#$F0
+    837  21e5		       85 21		      STA	HMP1
+    838  21e7		       b1 96		      lda	(scorepointers),y
+    839  21e9		       85 1b		      sta	GRP0
+    840  21eb		       85 2a		      STA	HMOVE	; cycle 73 ?
+    841  21ed		       4c 08 f2 	      jmp	beginscore
+    842  21f0
+    843  21f0
+    844  21f0					      if	((<*)>$d4)
     845  2200		       00 00 00 00*	      align	256	; kludge that potentially wastes space! should be fixed!
     846  2200					      endif
     847  2200

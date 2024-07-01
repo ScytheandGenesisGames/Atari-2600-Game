@@ -1,12 +1,12 @@
 --- Symbol List (sorted by symbol)
 0.21stcentury            0001                  
 0.__Main_Loop            d000              (R )
-0.continuelastP0         f159              (R )
+0.continuelastP0         f15a              (R )
 0.continuelastP1         f12d              (R )
-0.continueP0             f0a2              (R )
+0.continueP0             f0a3              (R )
 0.continueP1             f07e              (R )
 0.endkerloop             f106              (R )
-0.enterfromNBL           f107              (R )
+0.enterfromNBL           f107                  
 0.kerloop                f05b                  
 0.L00                    d000                  
 0.L01                    d000                  
@@ -15,23 +15,23 @@
 0.L04                    d000                  
 0.L05                    d000                  
 0.L06                    d018                  
-0.skipDrawlastP0         f162              (R )
+0.skipDrawlastP0         f167              (R )
 0.skipDrawlastP1         f100              (R )
 0.skipDrawP0             f04f              (R )
 0.skipDrawP1             f055              (R )
 0.startkernel            f074              (R )
 1.CYCLES                 0000              (R )
 2.CYCLES                 0002              (R )
-20.CYCLES                0000              (R )
-3.CYCLES                 0000              (R )
-4.CYCLES                 0004              (R )
-5.CYCLES                 0000              (R )
-6.CYCLES                 0006              (R )
-a                        00d4                  
+21.CYCLES                0000              (R )
+3.CYCLES                 0006              (R )
+4.CYCLES                 0002              (R )
+5.CYCLES                 0004              (R )
+6.CYCLES                 0000              (R )
+7.CYCLES                 0006              (R )
 A                        00d4                  
+a                        00d4                  
 alarmclock               0002                  
-altkernel                f0c0                  
-altkernel2               f0b4              (R )
+altkernel                f0b0                  
 AUDC0                    0015                  
 AUDC1                    0016                  
 AUDF0                    0017                  
@@ -44,8 +44,8 @@ aux3                     00f2
 aux4                     00f3                  
 aux5                     00f4                  
 aux6                     00f5                  
-B                        00d5                  
 b                        00d5                  
+B                        00d5                  
 backgroundchange         0000 ????         (R )
 ballheight               0092              (R )
 ballx                    0084                  
@@ -58,8 +58,8 @@ BS_jsr                   ffeb              (R )
 bs_mask                  0001              (R )
 BS_return                ffdd              (R )
 bscode_length            0020              (R )
-C                        00d6                  
 c                        00d6                  
+C                        00d6                  
 clearmem                 f264              (R )
 COLUBK                   0009                  
 COLUP0                   0006              (R )
@@ -78,8 +78,8 @@ CXM1P                    0001
 CXP0FB                   0002                  
 CXP1FB                   0003                  
 CXPPMM                   0007                  
-d                        00d7                  
 D                        00d7                  
+d                        00d7                  
 debugcycles              0000 ????         (R )
 debugscore               0000 ????         (R )
 DivideLoop               f45a              (R )
@@ -94,8 +94,8 @@ ECHOFIRST                0001
 ENABL                    001f              (R )
 ENAM0                    001d              (R )
 ENAM1                    001e              (R )
-endkernel                f16a              (R )
-enterlastkernel          f11b                  
+endkernel                f16d              (R )
+enterlastkernel          f11b              (R )
 f                        00d9                  
 F                        00d9                  
 FASTFETCH                0000 ????         (R )
@@ -130,8 +130,8 @@ INPT5                    000d
 interlaced               0000 ????         (R )
 interrupted              0004                  
 INTIM                    0284              (R )
-j                        00dd                  
 J                        00dd                  
+j                        00dd                  
 K                        00de                  
 k                        00de                  
 keepgoing                f2ef              (R )
@@ -140,7 +140,7 @@ kernel                   f000              (R )
 kernelmacrodef           0000 ????         (R )
 L                        00df                  
 l                        00df                  
-lastkernelline           f0dd              (R )
+lastkernelline           f0cd              (R )
 leftloop                 f366              (R )
 legacy                   0000 ????         (R )
 lifecolor                00f4                  
@@ -155,14 +155,13 @@ minikernel               0000 ????         (R )
 missile0height           0090              (R )
 missile0x                0082                  
 missile0y                0091              (R )
-missile1height           0087              (R )
+missile1height           0087                  
 missile1x                0083                  
 missile1y                0088              (R )
 multisprite              0000 ????         (R )
 n                        00e1                  
 N                        00e1                  
-no_blank_lines           0001              (R )
-no_blank_lines_bailout   f168              (R )
+no_blank_lines           0000 ????         (R )
 NO_ILLEGAL_OPCODES       0000 ????         (R )
 noeor                    f431              (R )
 noinc                    f2f6              (R )
@@ -219,29 +218,29 @@ pixeloff                 f336              (R )
 pixeloff_r               f2db              (R )
 pixelon                  f32c              (R )
 pixelon_r                f2cf              (R )
-player0color             0090                  
-player0colorstore        0082                  
+player0color             0090              (R )
+player0colorstore        0082              (R )
 player0height            008e              (R )
 player0pointer           008a              (R )
 player0pointerhi         008b                  
 player0pointerlo         008a                  
 player0x                 0080              (R )
 player0y                 0085              (R )
-player1color             0087                  
-player1colors            0000 ????         (R )
+player1color             0087              (R )
+player1colors            0001              (R )
 player1height            008f              (R )
 player1pointer           008c              (R )
 player1pointerhi         008d                  
 player1pointerlo         008c                  
 player1x                 0081                  
 player1y                 0086              (R )
-playercolors             0000 ????         (R )
+playercolors             0001              (R )
 playfield                00a4              (R )
 playfieldbase            00a4              (R )
 playfieldpos             00ef              (R )
 plotpoint                f31b              (R )
-Q                        00e4                  
 q                        00e4                  
+Q                        00e4                  
 qtcontroller             0000 ????         (R )
 R                        00e5                  
 r                        00e5                  
