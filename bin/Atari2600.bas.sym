@@ -14,7 +14,9 @@
 0.L03                    d000                  
 0.L04                    d000                  
 0.L05                    d000                  
-0.L06                    d018                  
+0.L06                    d000                  
+0.L07                    d000                  
+0.L08                    d018                  
 0.skipDrawlastP0         f167              (R )
 0.skipDrawlastP1         f100              (R )
 0.skipDrawP0             f04f              (R )
@@ -28,8 +30,8 @@
 5.CYCLES                 0004              (R )
 6.CYCLES                 0000              (R )
 7.CYCLES                 0006              (R )
-A                        00d4                  
 a                        00d4                  
+A                        00d4                  
 alarmclock               0002                  
 altkernel                f0b0                  
 AUDC0                    0015                  
@@ -44,9 +46,9 @@ aux3                     00f2
 aux4                     00f3                  
 aux5                     00f4                  
 aux6                     00f5                  
-b                        00d5                  
 B                        00d5                  
-backgroundchange         0000 ????         (R )
+b                        00d5                  
+backgroundchange         0001              (R )
 ballheight               0092              (R )
 ballx                    0084                  
 bally                    0089              (R )
@@ -58,10 +60,10 @@ BS_jsr                   ffeb              (R )
 bs_mask                  0001              (R )
 BS_return                ffdd              (R )
 bscode_length            0020              (R )
-c                        00d6                  
 C                        00d6                  
+c                        00d6                  
 clearmem                 f264              (R )
-COLUBK                   0009                  
+COLUBK                   0009              (R )
 COLUP0                   0006              (R )
 COLUP1                   0007              (R )
 COLUPF                   0008              (R )
@@ -96,8 +98,8 @@ ENAM0                    001d              (R )
 ENAM1                    001e              (R )
 endkernel                f16d              (R )
 enterlastkernel          f11b              (R )
-f                        00d9                  
 F                        00d9                  
+f                        00d9                  
 FASTFETCH                0000 ????         (R )
 font                     0000 ????         (R )
 g                        00da                  
@@ -132,14 +134,14 @@ interrupted              0004
 INTIM                    0284              (R )
 J                        00dd                  
 j                        00dd                  
-K                        00de                  
 k                        00de                  
+K                        00de                  
 keepgoing                f2ef              (R )
 keepgoingy               f30d              (R )
 kernel                   f000              (R )
 kernelmacrodef           0000 ????         (R )
-L                        00df                  
 l                        00df                  
+L                        00df                  
 lastkernelline           f0cd              (R )
 leftloop                 f366              (R )
 legacy                   0000 ????         (R )
@@ -147,8 +149,8 @@ lifecolor                00f4
 lifepointer              00f2                  
 lives                    00f3                  
 loop2                    f200              (R )
-m                        00e0                  
 M                        00e0                  
+m                        00e0                  
 MachineIs2600            f261              (R )
 mincycles                0000 ????         (R )
 minikernel               0000 ????         (R )
@@ -239,8 +241,8 @@ playfield                00a4              (R )
 playfieldbase            00a4              (R )
 playfieldpos             00ef              (R )
 plotpoint                f31b              (R )
-q                        00e4                  
 Q                        00e4                  
+q                        00e4                  
 qtcontroller             0000 ????         (R )
 R                        00e5                  
 r                        00e5                  
@@ -287,8 +289,8 @@ SWACNT                   0281
 SWBCNT                   0283                  
 SWCHA                    0280                  
 SWCHB                    0282                  
-t                        00e7                  
 T                        00e7                  
+t                        00e7                  
 T1024T                   0297                  
 temp1                    009c              (R )
 temp2                    009d              (R )
@@ -308,8 +310,8 @@ tiny                     0007
 U                        00e8                  
 u                        00e8                  
 up2                      f3b5              (R )
-v                        00e9                  
 V                        00e9                  
+v                        00e9                  
 var0                     00a4                  
 var1                     00a5                  
 var10                    00ae                  
@@ -374,10 +376,10 @@ W                        00ea
 w                        00ea                  
 whimsey                  0006                  
 WSYNC                    0002              (R )
-X                        00eb                  
 x                        00eb                  
-Y                        00ec                  
+X                        00eb                  
 y                        00ec                  
-z                        00ed                  
+Y                        00ec                  
 Z                        00ed                  
+z                        00ed                  
 --- End of Symbol List.
