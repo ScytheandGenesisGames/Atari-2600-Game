@@ -34,11 +34,12 @@ main
 
 
  bank 1
+ temp1=temp1
  rem use as a Sounds/music bank I guess ^_^;
  
  
  bank 1
-
+ temp1=temp1
  rem for putting the titlekernel inside this back for "title screen"
  asm
  include "titlescreen/asm/titlescreen.asm"
